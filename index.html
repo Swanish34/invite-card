@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Riya & Arjun's Wedding</title>
+</head>
+<body>
+
+  <h1>Riya & Arjun's Wedding 🎉</h1>
+
+  <form id="f">
+    <input name="name" placeholder="Your name" required>
+    <input name="phone" placeholder="Phone" required>
+    <input name="guests" type="number" value="1" min="1" max="10">
+    <textarea name="message" placeholder="Your wishes"></textarea>
+    <button>Send RSVP</button>
+  </form>
+
+  <p id="note"></p>
+
+  <script>
+    document.getElementById("f").onsubmit = async (e) => {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(e.target));
+      const r = await fetch("/api/rsvp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+      const j = await r.json();
+      document.getElementById("note").textContent = j.message;
+    };
+  </script>
+
+</body>
+</html>
